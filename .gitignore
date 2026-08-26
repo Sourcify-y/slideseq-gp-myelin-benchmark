@@ -216,3 +216,17 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+# Project-generated analysis outputs
+results/
+figures/
+outputs/
+gp_results_*.csv
+gp_results_*.png
+gp_results_*.pdf
+
+# Local datasets
+data/
+*.h5ad
+*.h5
+*.hdf5
+*.loom
