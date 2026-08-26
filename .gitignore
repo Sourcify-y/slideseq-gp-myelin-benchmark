@@ -230,3 +230,8 @@ data/
 *.h5
 *.hdf5
 *.loom
+# Project-generated analysis outputs
+results/
+
+# Local datasets
+data/
