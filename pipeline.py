@@ -403,7 +403,6 @@ def run_exact_gp(adata, coords, gene, description):
     print(f"  r:     {np.nanmean(split_metrics['pearson_r']):.4f} +/- {np.nanstd(split_metrics['pearson_r']):.4f}  "
           f"({n_degenerate}/{N_SPLITS} splits had a zero-variance test fold, excluded from r)")
 
-    # combine the per-split permutation p-values into one gene-level p-value
     per_split_pvals = [p["p_value"] for p in split_perm_results]
     _, combined_p = combine_pvalues(per_split_pvals, method="fisher")
     combined_observed_r2 = float(np.mean([p["observed_r2"] for p in split_perm_results]))
