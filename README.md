@@ -31,16 +31,16 @@ pip install -r requirements.txt
 
 ## Running the full pipeline
 ```bash
-python veritasai.py
+python pipeline.py
 ```
 Runs all 8 genes through both the exact-GP and SVGP pipelines, including robustness checks, permutation testing, and cross-method comparison. Takes roughly 2–3 hours on standard CPU hardware. For a faster check, see Quick reproduction below.
 
 ## Quick reproduction (5-10 min)
-To verify a single result without running the full pipeline, edit `TARGET_GENES` in `veritasai.py` to include only one gene:
+To verify a single result without running the full pipeline, edit `TARGET_GENES` in `pipeline.py` to include only one gene:
 ```python
 TARGET_GENES = {"Mbp": "myelin marker (primary target)"}
 ```
-Then run `python veritasai.py`. This reproduces the Mbp row of Table 2 (SVGP R² ≈ 0.428, exact-GP R² ≈ 0.040) in a few minutes.
+Then run `python pipeline.py`. This reproduces the Mbp row of Table 2 (SVGP R² ≈ 0.428, exact-GP R² ≈ 0.040) in a few minutes.
 
 **Note:** run from the repository root — the script writes output to a local `results/` directory using a relative path, so it will fail if that directory can't be created from wherever you run it.
 
