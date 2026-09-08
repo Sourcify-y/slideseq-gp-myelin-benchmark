@@ -16,6 +16,7 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
+from pathlib import Path
 
 import torch
 import gpytorch
@@ -44,7 +45,10 @@ N_REPEATS = 10
 TEST_SIZE = 0.2
 VAL_SIZE = 0.2
 GRID_RES = 50
-OUT_PREFIX = "gp_results"
+RESULTS_DIR = Path("results")
+RESULTS_DIR.mkdir(exist_ok=True)
+
+OUT_PREFIX = RESULTS_DIR / "gp_results"
 
 N_SPLITS = 5
 PERM_PER_SPLIT = 150
