@@ -50,3 +50,6 @@ Then run `python veritasai.py`. This reproduces the Mbp row of Table 2 (SVGP R²
 - `results/gp_results_crossmethod_summary.csv`
 - `results/gp_results_combined_significance_summary.csv`
 - Per-gene PNG figures (SVGP loss curves, cross-method comparison plots)
+
+## License
+MIT License. See `LICENSE` for details.
