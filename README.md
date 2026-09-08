@@ -42,13 +42,13 @@ TARGET_GENES = {"Mbp": "myelin marker (primary target)"}
 ```
 Then run `python pipeline.py`. This reproduces the Mbp row of Table 2 (SVGP R² ≈ 0.428, exact-GP R² ≈ 0.040) in a few minutes.
 
-**Note:** run from the repository root — the script writes output to a local `results/` directory using a relative path, so it will fail if that directory can't be created from wherever you run it.
+**Note:** output files are written to the current working directory, so run from wherever you want the results saved.
 
 ## Output
-- `results/gp_results_exactGP_summary.csv`
-- `results/gp_results_SVGP_summary.csv`
-- `results/gp_results_crossmethod_summary.csv`
-- `results/gp_results_combined_significance_summary.csv`
+- `gp_results_exactGP_summary.csv`
+- `gp_results_SVGP_summary.csv`
+- `gp_results_crossmethod_summary.csv`
+- `gp_results_combined_significance_summary.csv`
 - Per-gene PNG figures (SVGP loss curves, cross-method comparison plots)
 
 ## License
