@@ -1,0 +1,6 @@
+split,r2,detail,seconds
+0,0.1874498724937439,epochs=150;converged=True,148.3
+1,0.3208308815956116,epochs=150;converged=True,166.1
+2,0.23266440629959106,epochs=150;converged=True,149.4
+3,0.3539465665817261,epochs=150;converged=True,180.0
+4,0.18500471115112305,epochs=150;converged=True,170.3

@@ -1,0 +1,9 @@
+gene,real_fits,real_RBF,real_M15,real_M25,null_fits,null_RBF_pct,null_M15_pct,null_M25_pct,real_equals_perm_obs
+Mbp,5,2,2,1,500,35,42,23,True
+Plp1,5,1,4,0,500,42,37,21,True
+Mobp,5,1,3,1,500,39,40,21,True
+Mog,5,1,4,0,500,35,46,19,True
+Cnp,5,0,4,1,500,35,45,20,True
+Sox10,5,1,3,1,500,40,40,21,True
+Snap25,5,0,5,0,500,40,41,20,True
+Malat1,5,0,5,0,500,38,39,23,True

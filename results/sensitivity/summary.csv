@@ -1,0 +1,13 @@
+gene,comparison,summary
+Sox10,exact vs exact (independent subsamples),"median -0.014 [-0.026, -0.009]  defined 3/10"
+Sox10,SVGP vs SVGP (block partitions),"median +0.921 [+0.727, +0.954]  defined 10/10"
+Sox10,"SVGP vs SVGP (200, 400, 800 inducing points)","median +0.974 [+0.959, +0.976]  defined 3/3"
+Sox10,SVGP vs SVGP (seeds),"median +0.968 [+0.955, +0.981]  defined 3/3"
+Sox10,exact vs main SVGP,"median -0.007 [-0.077, +0.008]  defined 3/5"
+Sox10,exact vs SVGP (all exact x all partitions),"median -0.091 [-0.139, +0.008]  defined 15/25"
+Mbp,exact vs exact (independent subsamples),"median +0.728 [+0.616, +0.830]  defined 10/10"
+Mbp,SVGP vs SVGP (block partitions),"median +0.960 [+0.949, +0.965]  defined 10/10"
+Mbp,"SVGP vs SVGP (200, 400, 800 inducing points)","median +0.979 [+0.968, +0.983]  defined 3/3"
+Mbp,SVGP vs SVGP (seeds),"median +0.988 [+0.984, +0.989]  defined 3/3"
+Mbp,exact vs main SVGP,"median +0.830 [+0.787, +0.870]  defined 5/5"
+Mbp,exact vs SVGP (all exact x all partitions),"median +0.840 [+0.735, +0.901]  defined 25/25"
