@@ -1,0 +1,5 @@
+annotation,labels,gene,eta2_svgp_map_by_label,eta2_cell_expression_by_label,top3_labels_by_mean_map
+leiden,10,Mbp,0.427,0.385,3 (+0.91); 4 (+0.14); 9 (-0.09)
+leiden,10,Sox10,0.232,0.047,3 (+0.09); 4 (-0.01); 6 (-0.02)
+cluster,14,Mbp,0.264,0.227,Oligodendrocytes (+0.92); Polydendrocytes (+0.47); Neurogenesis (+0.14)
+cluster,14,Sox10,0.162,0.049,Oligodendrocytes (+0.10); Polydendrocytes (+0.04); Subiculum_Entorhinal_cl3 (+0.02)

@@ -1,0 +1,7 @@
+metric,gp / other,ratio,gp_better
+interval_score,gp_const,"0.999 [0.985, 1.013]",23/40
+interval_score,knn_const,"0.974 [0.955, 0.994]",28/40
+interval_score,idw_const,"0.999 [0.979, 1.020]",20/40
+crps,gp_const,"1.010 [0.991, 1.029]",18/40
+crps,knn_const,"0.967 [0.948, 0.986]",27/40
+crps,idw_const,"1.022 [1.001, 1.043]",12/40

@@ -235,15 +235,22 @@ def benjamini_hochberg(pvals, alpha=ALPHA_FDR):
     return qvals, qvals <= alpha
 
 
-def robustness_check(coords_scaled, expr, gene_name, n_repeats=N_REPEATS, n_sub=N_SUBSAMPLE):
-    print(f"\n[{gene_name}] Hyperparameter robustness across {n_repeats} random subsamples...")
+def draw_disjoint_subsamples(n_total, n_sub, n_draws, seed=SEED):
+    # non-overlapping subsamples, drawn without replacement from the full dataset
+    if n_sub * n_draws > n_total:
+        raise ValueError(f"{n_draws} x {n_sub} cells exceeds the {n_total} available cells")
+    perm = np.random.RandomState(seed).permutation(n_total)
+    return [perm[i * n_sub:(i + 1) * n_sub] for i in range(n_draws)]
+
+
+def robustness_check(coords, expr, gene_name, kernel_name, subsample_idx):
+    print(f"\n[{gene_name}] Hyperparameter stability, kernel={kernel_name}, "
+          f"{len(subsample_idx)} independent subsamples...")
     length_scales, noise_levels = [], []
-    for r in range(n_repeats):
-        rng = np.random.RandomState(SEED + r)
-        idx = rng.choice(len(expr), size=n_sub, replace=False)
-        X, y = coords_scaled[idx], expr[idx]
-        kernel = RBF(length_scale=[1.0, 1.0]) + WhiteKernel(noise_level=1.0)
-        gp = GaussianProcessRegressor(kernel=kernel, n_restarts_optimizer=3,
+    for idx in subsample_idx:
+        X = StandardScaler().fit_transform(coords[idx])
+        y = expr[idx]
+        gp = GaussianProcessRegressor(kernel=_kernel_ctor(kernel_name), n_restarts_optimizer=3,
                                        normalize_y=True, random_state=SEED)
         gp.fit(X, y)
         params = gp.kernel_.get_params()
@@ -254,7 +261,8 @@ def robustness_check(coords_scaled, expr, gene_name, n_repeats=N_REPEATS, n_sub=
     nl_mean, nl_std = np.mean(noise_levels), np.std(noise_levels)
     print(f"  length_scale (standardized units, mean over x,y): {ls_mean:.3f} +/- {ls_std:.3f}")
     print(f"  noise_level:  {nl_mean:.3f} +/- {nl_std:.3f}")
-    return {"length_scale": (ls_mean, ls_std), "noise_level": (nl_mean, nl_std)}
+    return {"kernel": kernel_name, "length_scale": (ls_mean, ls_std), "noise_level": (nl_mean, nl_std),
+            "length_scales": length_scales, "noise_levels": noise_levels}
 
 
 def _kernel_ctor(name):
@@ -313,14 +321,18 @@ def run_exact_gp(adata, coords, gene, description):
     print("=" * 70)
 
     expr = get_gene_expression(adata, gene)
-    rng = np.random.RandomState(SEED)
-    idx = rng.choice(len(expr), size=N_SUBSAMPLE, replace=False)
+    # N_SPLITS subsamples for the evaluation splits and N_REPEATS for the stability
+    # check, all non-overlapping and drawn from the full dataset
+    subsamples = draw_disjoint_subsamples(len(expr), N_SUBSAMPLE, N_SPLITS + N_REPEATS)
+    split_subsamples = subsamples[:N_SPLITS]
+    stability_subsamples = subsamples[N_SPLITS:]
+
+    # final map is fit on the first split's subsample
+    idx = split_subsamples[0]
     X_all_raw, y_all = coords[idx], expr[idx]
 
     coord_scaler = StandardScaler().fit(X_all_raw)
     X_all = coord_scaler.transform(X_all_raw)
-
-    robustness = robustness_check(X_all, y_all, gene)
 
     split_metrics = {"rmse": [], "r2": [], "pearson_r": [], "rmse_knn": [], "rmse_idw": [],
                       "calib_1sigma": [], "calib_2sigma": [], "kernel_chosen": [],
@@ -331,19 +343,23 @@ def run_exact_gp(adata, coords, gene, description):
     for split_i in range(N_SPLITS):
         split_seed = SEED + split_i
 
-        trainval_idx, test_idx = spatial_block_split(X_all_raw, test_size=TEST_SIZE,
+        sub_idx = split_subsamples[split_i]
+        X_raw_s, y_s = coords[sub_idx], expr[sub_idx]
+        X_s = StandardScaler().fit_transform(X_raw_s)
+
+        trainval_idx, test_idx = spatial_block_split(X_raw_s, test_size=TEST_SIZE,
                                                        n_blocks=N_BLOCKS_A, seed=split_seed)
-        trainval_coords = X_all_raw[trainval_idx]
+        trainval_coords = X_raw_s[trainval_idx]
         train_sub_idx, val_sub_idx = spatial_block_split(
             trainval_coords, test_size=VAL_SIZE,
             n_blocks=max(5, int(N_BLOCKS_A * (1 - TEST_SIZE))), seed=split_seed + 1000)
         train_idx = trainval_idx[train_sub_idx]
         val_idx = trainval_idx[val_sub_idx]
 
-        X_train, y_train = X_all[train_idx], y_all[train_idx]
-        X_val, y_val = X_all[val_idx], y_all[val_idx]
-        X_trainval, y_trainval = X_all[trainval_idx], y_all[trainval_idx]
-        X_test, y_test = X_all[test_idx], y_all[test_idx]
+        X_train, y_train = X_s[train_idx], y_s[train_idx]
+        X_val, y_val = X_s[val_idx], y_s[val_idx]
+        X_trainval, y_trainval = X_s[trainval_idx], y_s[trainval_idx]
+        X_test, y_test = X_s[test_idx], y_s[test_idx]
 
         print(f"\n  [split {split_i+1}/{N_SPLITS}] "
               f"(spatial blocks: train={len(train_idx)}, val={len(val_idx)}, test={len(test_idx)}) "
@@ -396,6 +412,7 @@ def run_exact_gp(adata, coords, gene, description):
         split_perm_results.append(perm_result)
 
     modal_kernel = pd.Series(split_metrics["kernel_chosen"]).mode()[0]
+    robustness = robustness_check(coords, expr, gene, modal_kernel, stability_subsamples)
     n_degenerate = int(np.sum(split_metrics["degenerate_test_fold"]))
     print(f"\n  Modal kernel choice across {N_SPLITS} splits: {modal_kernel}")
     print(f"  RMSE:  {np.mean(split_metrics['rmse']):.4f} +/- {np.std(split_metrics['rmse']):.4f}  (across {N_SPLITS} splits)")
@@ -691,12 +708,18 @@ def main():
     moran_df = moran_baseline(adata, genes_present)
 
     exact_summary, svgp_summary, cross_summary = [], [], []
+    stability_rows = []
 
     for gene in genes_present:
         desc = TARGET_GENES[gene]
         exact_res = run_exact_gp(adata, coords, gene, desc)
         svgp_res = run_svgp(adata, coords, gene, desc)
         cross_res = compare_methods(gene, exact_res, svgp_res)
+
+        rob = exact_res["robustness"]
+        for i, (ls, nl) in enumerate(zip(rob["length_scales"], rob["noise_levels"])):
+            stability_rows.append({"gene": gene, "kernel": rob["kernel"], "subsample": i + 1,
+                                   "length_scale": ls, "noise_level": nl})
 
         exact_summary.append({k: v for k, v in exact_res.items()
                                if k not in ("grid", "mean_grid", "std_grid", "X_all", "y_all",
@@ -744,6 +767,7 @@ def main():
                      "spatially_significant_fdr", "svgp_perm_p_value", "svgp_perm_q_value",
                      "svgp_spatially_significant_fdr"]].to_string(index=False))
 
+    pd.DataFrame(stability_rows).to_csv(f"{OUT_PREFIX}_stability_per_fit.csv", index=False)
     exact_df.to_csv(f"{OUT_PREFIX}_exactGP_summary.csv", index=False)
     svgp_df.to_csv(f"{OUT_PREFIX}_SVGP_summary.csv", index=False)
     cross_df.to_csv(f"{OUT_PREFIX}_crossmethod_summary.csv", index=False)

@@ -230,3 +230,5 @@ data/
 *.h5
 *.hdf5
 *.loom
+.DS_Store
+*_log.txt

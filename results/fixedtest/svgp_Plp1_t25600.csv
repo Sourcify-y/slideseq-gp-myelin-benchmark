@@ -1,0 +1,6 @@
+split,r2,detail,seconds
+0,0.15058010816574097,n_train=25600;n_test=8648;epochs=198;converged=True,120.7
+1,0.12185978889465332,n_train=25600;n_test=9247;epochs=198;converged=True,121.0
+2,0.16533303260803223,n_train=25600;n_test=8924;epochs=198;converged=True,115.3
+3,0.16349130868911743,n_train=25600;n_test=8594;epochs=198;converged=True,121.2
+4,0.020739316940307617,n_train=25600;n_test=9164;epochs=198;converged=True,122.0
