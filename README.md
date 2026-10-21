@@ -5,7 +5,7 @@ Benchmarks exact and sparse variational Gaussian Process (GP) regression for mod
 ## Dataset
 Uses the Slide-seqV2 mouse brain dataset, accessed through Squidpy. Downloaded automatically when the pipeline runs; not stored in this repository.
 ## Methods
-- Exact GP regression on repeated 2,000-cell spatial subsamples
+- Exact GP regression on non-overlapping 2,000-cell spatial subsamples
 - Sparse variational GP (SVGP) regression on the full dataset
 - RBF and Matérn kernel comparison
 - Spatially blocked train/validation/test splitting
@@ -63,6 +63,7 @@ Rscript sparkx_run_full.R
 - `results/gp_results_SVGP_summary.csv`
 - `results/gp_results_crossmethod_summary.csv`
 - `results/gp_results_combined_significance_summary.csv` (permutation p-values superseded by `results/perm`)
+- `results/gp_results_stability_per_fit.csv`
 - Per-gene PNG figures (SVGP loss curves, cross-method comparison plots)
 - Revision outputs in the `results/` subfolders listed above
 ## License
