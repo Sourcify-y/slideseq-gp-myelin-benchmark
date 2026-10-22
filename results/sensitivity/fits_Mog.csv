@@ -1,0 +1,15 @@
+fit,test_r2,detail
+exact_s0,0.05483560713536406,kernel=Matern(nu=1.5);ls=1.82;noise=0.953
+exact_s1,-0.1189264461887396,kernel=Matern(nu=1.5);ls=1.17;noise=0.911
+exact_s2,-0.0012660506319239762,kernel=Matern(nu=1.5);ls=0.766;noise=0.879
+exact_s3,-0.0010082531772996894,kernel=Matern(nu=1.5);ls=1.31;noise=0.927
+exact_s4,-0.015495783812817354,kernel=RBF;ls=1.09;noise=0.957
+svgp_p0,0.12987661361694336,M=400;seed=42;converged=True
+svgp_p1,0.002911686897277832,M=400;seed=43;converged=True
+svgp_p2,0.08953255414962769,M=400;seed=44;converged=True
+svgp_p3,0.12384885549545288,M=400;seed=45;converged=True
+svgp_p4,0.03874868154525757,M=400;seed=46;converged=True
+svgp_M200,0.13506346940994263,M=200;seed=42;converged=True
+svgp_M800,0.12266206741333008,M=800;seed=42;converged=True
+svgp_seed1,0.1288003921508789,M=400;seed=43;converged=True
+svgp_seed2,0.13300514221191406,M=400;seed=44;converged=True

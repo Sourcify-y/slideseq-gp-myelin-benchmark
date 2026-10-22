@@ -1,0 +1,8 @@
+squidpy beads                     : 41786
+raw-puck beads (DGE n locations)  : 53208
+beads in both                     : 41786
+fraction of squidpy beads matched : 1.0000
+RESTRICTED to squidpy beads: final n = 41786
+final matrix: 41786 beads x 23264 genes
+median UMIs/bead: 433.0
+median genes/bead: 334.0
