@@ -1,5 +1,5 @@
 """
-Baseline rerun for exact GP (reviewer items 12, 13, 14).
+Baseline rerun for exact GP.
 
 Design
   Same splits as the exact-GP permutation run (permutation_tests.build_splits):

@@ -1,5 +1,5 @@
 """
-Inducing-point sensitivity for the SVGP (reviewer item 11).
+Inducing-point sensitivity for the SVGP.
 
 Design
   Full dataset, 5 splits, 40 blocks, 20% of blocks held out. These are the splits and

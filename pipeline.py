@@ -30,14 +30,14 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 TARGET_GENES = {
     "Mbp":    "myelin marker (primary target)",
-    "Plp1":   "myelin marker (replication check)",
-    "Mobp":   "myelin marker (replication check)",
-    "Mog":    "myelin marker (replication check)",
+    "Plp1":   "myelin marker",
+    "Mobp":   "myelin marker",
+    "Mog":    "myelin marker",
     "Cnp":    "oligodendrocyte-lineage marker",
     "Sox10":  "oligodendrocyte-lineage transcription factor",
-    "Snap25": "diffuse neuronal marker (negative/weak-spatial control)",
-    "Actb":   "housekeeping gene (negative/weak-spatial control)",
-    "Malat1": "broadly/ubiquitously expressed (negative/weak-spatial control)",
+    "Snap25": "diffuse neuronal marker (comparison gene)",
+    "Actb":   "housekeeping gene (comparison gene)",
+    "Malat1": "broadly/ubiquitously expressed (comparison gene)",
 }
 
 N_SUBSAMPLE = 2000
@@ -674,8 +674,8 @@ def compare_methods(gene, exact_res, svgp_res):
         print(f"  Spatial map correlation (exact GP vs SVGP): r={r:.3f} (p={p:.2e}, n={valid.sum()} grid cells)")
         if abs(r) < WEAK_AGREEMENT_R:
             weak_agreement = True
-            print(f"  NOTE: |r|={abs(r):.3f} is below the weak-agreement threshold ({WEAK_AGREEMENT_R}) -- "
-                  f"the two methods aren't agreeing well on this gene's spatial pattern.")
+            print(f"  NOTE: |r|={abs(r):.3f} is below the weak-agreement threshold ({WEAK_AGREEMENT_R}); "
+                  f"exact-GP and SVGP maps agree weakly for this gene.")
 
     fig, axes = plt.subplots(1, 3, figsize=(16, 5))
     xx, yy, _ = exact_res["grid"]

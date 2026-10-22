@@ -1,5 +1,5 @@
 """
-Matched-data comparison of exact GP and SVGP (reviewer items 6 and 7, recommended 3).
+Matched-data comparison of exact GP and SVGP.
 
 Design
   All models use the same spatially blocked splits: 5 splits, 40 k-means blocks per

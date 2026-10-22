@@ -1,7 +1,11 @@
 """
-Export the recovered count matrix (all genes, all cells) for SPARK-X.
-Counts are recovered from squidpy X by per-cell rescaling (see sparkx_export.py); the export stops
-if less than 99.9% of rescaled values are within 0.01 of an integer.
+Export recovered counts for all genes and cells of the squidpy Slide-seqV2 object for SPARK-X.
+
+Counts are recovered from the log-normalized matrix: values are back-transformed with expm1 and
+each cell is divided by its smallest nonzero value. The export stops if fewer than 99.9% of the
+rescaled values lie within 0.01 of an integer.
+
+Outputs (results/sparkx): counts_full.mtx, genes_full.txt, cells_full.csv
 """
 import numpy as np
 import pandas as pd
@@ -28,4 +32,3 @@ sio.mmwrite("results/sparkx/counts_full.mtx", counts, field="integer")
 pd.Series(list(a.var_names)).to_csv("results/sparkx/genes_full.txt", index=False, header=False)
 pd.DataFrame({"cell": a.obs_names.astype(str), "x": a.obsm["spatial"][:, 0],
               "y": a.obsm["spatial"][:, 1]}).to_csv("results/sparkx/cells_full.csv", index=False)
-print("genes x cells:", counts.shape, "| nonzero entries:", counts.nnz)

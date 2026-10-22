@@ -1,5 +1,5 @@
 """
-Permutation tests with full refitting (reviewer items 2 and 4).
+Permutation tests with full refitting.
 
 exact : one gene, 5 independent non-overlapping 2,000-cell subsamples.
         Statistic T = mean test R^2 across the 5 spatially blocked splits.

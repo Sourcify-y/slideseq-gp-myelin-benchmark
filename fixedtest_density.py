@@ -1,5 +1,5 @@
 """
-Fixed-test-block density experiment (reviewer items 6 and 7).
+Fixed-test-block density experiment.
 
 Design
   Full dataset, 5 splits, 40 blocks, 20% of blocks held out. The test cells are the same
