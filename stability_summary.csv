@@ -1,0 +1,10 @@
+gene,kernel,fits,ls_median,ls_range,noise_median,noise_range,ls_below_1e-3,ls_above_10
+Mbp,RBF,10,0.244,0.208 to 0.283,0.586,0.541 to 0.634,0,0
+Mbp,Matern(nu=1.5),10,0.353,0.305 to 0.425,0.546,0.519 to 0.604,0,0
+Plp1,Matern(nu=1.5),10,0.342,0.31 to 0.402,0.602,0.568 to 0.641,0,0
+Mobp,Matern(nu=1.5),10,0.459,0.403 to 0.52,0.702,0.673 to 0.728,0,0
+Mog,Matern(nu=1.5),10,0.794,0.503 to 1.78,0.876,0.809 to 0.948,0,0
+Cnp,Matern(nu=1.5),10,0.559,0.343 to 0.745,0.79,0.676 to 0.879,0,0
+Sox10,Matern(nu=1.5),10,0.0955,1e-05 to 2.29e+03,1e-05,1e-05 to 0.0824,2,1
+Snap25,Matern(nu=1.5),10,0.904,0.642 to 1.4,0.815,0.779 to 0.863,0,0
+Malat1,Matern(nu=1.5),10,1.01,0.781 to 1.16,0.878,0.851 to 0.904,0,0
