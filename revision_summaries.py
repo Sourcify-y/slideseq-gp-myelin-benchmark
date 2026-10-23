@@ -6,7 +6,6 @@ results/perm/exact_<gene>.csv (kernel_split columns, b = -1 is the real-label fi
 
 Usage
     python3 revision_summaries.py kernels
-    python3 revision_summaries.py hyper
     python3 revision_summaries.py calibration
 """
 import argparse
@@ -59,24 +58,6 @@ def kernels():
           {s: int(out[f"real_{s}"].sum()) for s in SHORT.values()})
 
 
-def hyper():
-    rows = []
-    for g in GENES:
-        d = load(g)
-        if d is None:
-            continue
-        ls, nz = d["length_scale"], d["noise_level"]
-        rows.append({"gene": g, "k": len(d), "ls_median": f"{ls.median():.3g}",
-                     "ls_range": f"{ls.min():.3g} to {ls.max():.3g}",
-                     "noise_median": f"{nz.median():.3g}",
-                     "noise_range": f"{nz.min():.3g} to {nz.max():.3g}",
-                     "ls_below_1e-3": int((ls < 1e-3).sum()), "ls_above_10": int((ls > 10).sum())})
-    out = pd.DataFrame(rows)
-    out.to_csv(OUT / "hyperparameters.csv", index=False)
-    print("length scale: mean over the 2 ARD dimensions, standardized coordinates")
-    print(out.to_string(index=False))
-
-
 def calibration():
     ds = {g: load(g) for g in GENES if load(g) is not None}
     ds["ALL"] = pd.concat(ds.values(), ignore_index=True)
@@ -98,5 +79,5 @@ def calibration():
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("mode", choices=["kernels", "hyper", "calibration"])
-    {"kernels": kernels, "hyper": hyper, "calibration": calibration}[ap.parse_args().mode]()
+    ap.add_argument("mode", choices=["kernels", "calibration"])
+    {"kernels": kernels, "calibration": calibration}[ap.parse_args().mode]()
