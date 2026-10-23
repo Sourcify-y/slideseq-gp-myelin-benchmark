@@ -29,7 +29,8 @@ The global seed is 42. Block partitions use seeds 42 to 46, and permutations use
 | `pipeline.py` | Exact GP, SVGP, Moran's I, baselines and cross-method maps for the eight genes | `results/gp_results_*` |
 | `permutation_tests.py` | Permutation tests with full refitting for exact GP and SVGP | `results/perm` |
 | `baseline_rerun.py` | Exact GP, kNN and IDW on the five independent subsamples, with predictive interval coverage and width | `results/baselines` |
-| `revision_summaries.py` | Kernel selection counts, hyperparameter ranges, calibration coverage and width across all splits | `results/revision` |
+| `revision_summaries.py` | Kernel selection counts, calibration coverage and width across all splits | `results/revision` |
+| `stability_rerun.py` | Hyperparameter stability: each gene's modal kernel fitted to ten further disjoint 2,000-cell subsamples (both kernels for Mbp, which is tied) | `results/revision` (`stability_per_fit.csv`, `stability_summary.csv`) |
 | `uncertainty_scores.py` | Interval score and CRPS of the exact GP against kNN and IDW with constant standard deviation | `results/uncertainty` |
 | `matched_comparison.py` | Exact GP and SVGP at matched subsample sizes (2,000, 4,000, 6,000 cells); SVGP on the full data at 10, 20, 40, 80, 150 and 300 blocks | `results/matched` |
 | `fixedtest_density.py` | SVGP with a fixed test set and a varying number of training cells | `results/fixedtest` |
@@ -54,6 +55,7 @@ pip install -r requirements.txt
 python3 pipeline.py
 sh run_perms.sh
 sh run_baselines.sh
+python3 stability_rerun.py
 sh run_matched.sh
 sh run_blocks.sh
 sh run_fullbase.sh
@@ -70,7 +72,7 @@ python3 descriptive_tables.py blocks
 python3 descriptive_tables.py labels
 ```
 
-Summaries are written by the `summary` subcommand of each script, for example `python3 permutation_tests.py summary`, and by `python3 revision_summaries.py kernels`, `hyper` and `calibration`. `python3 sensitivity_summary_all.py` summarizes the map comparisons.
+Summaries are written by the `summary` subcommand of each script, for example `python3 permutation_tests.py summary`, and by `python3 revision_summaries.py kernels` and `calibration`. `python3 sensitivity_summary_all.py` summarizes the map comparisons.
 
 The SVGP with 400 inducing points takes about 108 s per fit on a laptop CPU at 40 blocks. With 200, 800 and 1,600 inducing points the times are 60 s, 346 s and 1,857 s.
 
@@ -93,7 +95,7 @@ Outputs behind the tables and figures of the paper. Rerunning the scripts reprod
 |---|---|
 | `results/perm` | Permutation draws and summaries for exact GP and SVGP |
 | `results/baselines` | Per-split exact GP, kNN and IDW results; accuracy and calibration summaries |
-| `results/revision` | Kernel counts, hyperparameters, calibration coverage and width, block and gene descriptives, label overlap |
+| `results/revision` | Kernel counts, hyperparameter stability, calibration coverage and width, block and gene descriptives, label overlap |
 | `results/uncertainty` | Interval score and CRPS per gene and split |
 | `results/matched` | Exact GP and SVGP at matched sizes and block designs |
 | `results/fixedtest` | SVGP R² by number of training cells |
